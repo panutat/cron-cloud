@@ -1,0 +1,8 @@
+mongodb:
+  server:   localhost
+  database: cron
+  user:     cron
+  password:
+
+server:
+  port:     8082

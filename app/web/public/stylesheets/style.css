@@ -1,0 +1,53 @@
+body {
+    margin: 0px;
+    background-image: url("../images/cron_bg.gif");
+    font-size: 14px;
+}
+input {
+    font-size: 14px;
+}
+form {
+    margin-top: 10px;
+}
+table {
+    margin-top: 10px;
+    border-color: #cccccc;
+}
+table td {
+    padding: 5px 10px;
+}
+p.TableHeading {
+    font-weight: bold;
+}
+h1.username {
+    color: #b65179;
+    margin-bottom: 10px;
+}
+.dl-horizontal dt {
+    width: 430px;
+    text-align: left;
+}
+.dl-horizontal dt label {
+    display: inline;
+    margin-left: 10px;
+    display: block;
+    float: left;
+}
+.dl-horizontal dt label.expression {
+    font-weight: bold;
+    width: 90px;
+    color: #b65179;
+}
+.dl-horizontal dd {
+    margin: 5px 0px 5px 80px;
+}
+.container {
+    padding: 20px;
+}
+.delete {
+    margin-left: 10px;
+    color: #ff0000;
+}
+.delete:hover {
+    color: #ff0000;
+}

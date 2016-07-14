@@ -1,0 +1,24 @@
+{
+    "name": "Cron Cloud",
+    "description": "Cron as a cloud service",
+    "version": "1.0.0",
+    "author": "Pat Khunachak",
+    "dependencies": {
+        "mongoose": "latest",
+        "ejs": "latest",
+        "request": "latest",
+        "express": "latest",
+        "config": "latest",
+        "async": "latest",
+        "cron": "latest",
+        "body-parser": "latest",
+        "method-override": "latest",
+        "errorhandler": "latest"
+    },
+    "keywords": ["cron", "service"],
+    "repository": "https://github.com/panutat/cron-cloud",
+    "license": "MIT",
+    "engine": {
+        "node": ">=0.6"
+    }
+}

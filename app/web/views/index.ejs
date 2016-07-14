@@ -1,0 +1,138 @@
+<script src="/web/javascripts/jquery.form.js"></script>
+<div class="row">
+    <div class="span12">
+        <h1 class="username"><%= firstname %> <%= lastname %></h1>
+        <h2>Add a Job</h2>
+        <form class="well form-inline" action="/api/jobs" id="new_job" method="post">
+            <input type="text" class="span2" name="expression" placeholder="Expression">
+            <input type="text" class="span7" name="url" placeholder="Url">
+            <button type="submit" class="btn btn-success">Save</button>
+            <a href="/web/logout" class="btn btn-warning">Logout</a>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="span12">
+        <h2>List of Jobs</h2>
+        <dl class="dl-horizontal" id="job_list">
+            </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="span12">
+        <h2>Expression Examples</h2>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <tbody>
+                <tr>
+                    <td valign="top" width="15%">
+                        <p class="TableHeading"><span lang="DE">Pattern</span></p>
+                    </td>
+                    <td valign="top" width="85%">
+                        <p class="TableHeading"><span lang="DE">Description</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>* * * * * *</span></p>
+                    </td>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>Runs the job every second. None of the fields are restricted.</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>*/5 * * * * *</span></p>
+                    </td>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>Runs every five seconds, starting at second zero (that is, seconds 0,5,10,15,20,25,30,35,40,45,50,55)</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>0 * * * * *</span></p>
+                    </td>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>Runs every minute, on the first second of the minute</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>0 0 * * * *</span></p>
+                    </td>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>Runs every hour, on the first second of the minute and the first minute of the hour</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>0 0 */4 * * *</span></p>
+                    </td>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>Runs every four hours, starting with hour zero (that is, hours 0,4,8,12,16,20) on the first second of the minute and the first minute of the hour</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>00 30 11 * * *</span></p>
+                    </td>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>Runs every day at</span><span>11:30:00 AM</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>00 30 11 * * 2-6</span></p>
+                    </td>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>Runs every weekday (Monday through Friday) at </span><span>11:30:00 AM</span><span>. It does not run on Saturday or Sunday.</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>00 30 11 1 0,6 *</span></p>
+                    </td>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>Runs at</span><span>11:30:00 AM</span><span> on the first of January and first of July</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>00 30 11 1 0 2</span></p>
+                    </td>
+                    <td valign="top">
+                        <p class="MsoNormal"><span>Runs at </span><span>11:30:00 AM</span><span> on the first of January if it is Monday. It is uncommon to specify both a [Day of Month] and a [Day of Week], but it is allowed. This job runs every few years since the first of January is not always a Monday.</span></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        var refreshList = function() {
+            $.getJSON('/api/jobs', function(jobs) {
+                var lines = [];
+                $.each(jobs, function(key, job) {
+                    lines.push('<dt><label class="expression">' + job.expression + '</label> <label class="next">[Next: ' + job.nextrun + ']</label></dt><dd><a href="' + job.url + '" target="_blank">' + job.url +
+                        '</a> <a href="#" class="delete" id="' + job._id + '">Remove</a></dd>');
+                });
+                $('#job_list').html(lines.join(''));
+                $('.delete').click(function() {
+                    if (confirm('Are you sure you want to delete this job?')) {
+                        $.ajax({
+                            url: '/api/jobs/' + this.id,
+                            type: 'DELETE',
+                            success: function(result) {
+                                refreshList();
+                            }
+                        });
+                    }
+                });
+            });
+        };
+        $('#new_job').ajaxForm({
+            success: refreshList
+        });
+        refreshList();
+    });
+</script>
